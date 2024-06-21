@@ -1,0 +1,110 @@
+<style>
+    .row .col.s6 {
+        width: 100%; /* Изменено для адаптации под мобильные устройства */
+        margin-left: auto;
+        left: auto;
+        right: auto;
+    }
+    .card .card-image img {
+        height: auto; /* Изменено для адаптации под мобильные устройства */
+        width: 100%;
+        object-fit: cover;
+    }
+    .row {
+        margin-left: 0; /* Изменено для адаптации под мобильные устройства */
+        margin-right: 0; /* Добавлено для адаптации под мобильные устройства */
+    }
+    .carousel-container {
+        width: 100%; /* Изменено для адаптации под мобильные устройства */
+        overflow: hidden; /* Добавлено для адаптации под мобильные устройства */
+    }
+    .carousel {
+        display: flex; /* Добавлено для адаптации под мобильные устройства */
+        overflow-x: auto; /* Добавлено для адаптации под мобильные устройства */
+        scroll-snap-type: x mandatory; /* Добавлено для адаптации под мобильные устройства */
+        -webkit-overflow-scrolling: touch; /* Добавлено для адаптации под мобильные устройства */
+    }
+    .carousel-slide {
+        flex: 0 0 auto; 
+        scroll-snap-align: start; 
+        width: 100%; 
+    }
+</style>
+
+<h1>{{__ 'Welcome'}}</h1>
+
+<p>{{__ 'Only the best technology is here'}}</p>
+<div class="carousel-container">
+  <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+  <div class="carousel">
+    <div class="carousel-slide">
+      <img src="https://ee2.pigugroup.eu/categories/0/62/62/for_listing/3c816bdde61c36d92b73a2934e16f54e_large.jpg" alt="Slide 1">
+    </div>
+    <div class="carousel-slide">
+      <img src="https://ee2.pigugroup.eu/categories/0/94/94/for_listing/1cd06bd18d3ff84b20819ecceaecfcdf_large.jpg" alt="Slide 2">
+    </div>
+    <div class="carousel-slide">
+      <img src="https://ee2.pigugroup.eu/categories/0/24/24/for_listing/71907835b7651cb62af7b79c3b464cb8_large.jpg" alt="Slide 3">
+    </div>
+  </div>
+  <button class="next" onclick="plusSlides(1)">&#10095;</button>
+</div>
+<script type="text/javascript">
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function showSlides(n) {
+  const slides = document.getElementsByClassName("carousel-slide");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
+}
+
+// Add automatic scrolling every 3 seconds
+let slideInterval = setInterval(function() { plusSlides(1); }, 3000);
+
+// Stop automatic scrolling when hovering over the slider
+document.querySelector('.carousel-container').addEventListener('mouseenter', function() {
+    clearInterval(slideInterval);
+});
+
+// Resume automatic scrolling when leaving the slider
+document.querySelector('.carousel-container').addEventListener('mouseleave', function() {
+    slideInterval = setInterval(function() { plusSlides(1); }, 3000);
+});
+</script>
+<h2>{{__ 'the newest technology!'}}</h2>
+{{#if courses.length}}
+  <div class="row">
+    {{#each courses}}
+      <div class="col s12 m6"> <!-- на маленьких экранах один элемент в строке, на средних - по два -->
+        <div class="card">
+          <div class="card-image">
+            <img src="{{img}}" alt="{{title}}">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{title}}</span>
+            <p class="price">{{price}}</p>
+          </div>
+          <div class="card-action actions">
+            <a href="/courses/{{id}}" target="_blank">{{__ 'more details'}}</a>
+            <a href="/courses/{{id}}/edit?allow=true">{{__ 'Edit'}}</a>
+            <form action="/card/add" method="POST">
+              <input type="hidden" name="id" value="{{id}}">
+              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{else}}
+  <p>{{__ 'This technology is not yet available'}}</p>
+{{/if}}
