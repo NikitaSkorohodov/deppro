@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Course = require('../models/course');
+const Course = require('../models/products');
 const router = Router();
 
 // GET /courses - отображение списка курсов
@@ -16,6 +16,52 @@ router.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Search route
+router.get('/ed', async (req, res) => {
+  try {
+    const courses = await Course.find();
+    res.render('courses', {
+      title: 'Курсы',
+      isCourses: true,
+      courses
+    });
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+// Search route
+router.get('/search', async (req, res) => {
+  try {
+    const searchTerm = req.query.q;
+    const category = req.query.category; // Добавляем получение категории из запроса
+    if (!searchTerm || typeof searchTerm !== 'string') {
+      throw new Error('Invalid search term');
+    }
+    let query = {
+      $or: [
+        { title: { $regex: searchTerm, $options: 'i' } },
+        { description: { $regex: searchTerm, $options: 'i' } }
+      ]
+    };
+    // Если указана категория, добавляем ее в поиск
+    if (category) {
+      query.category = category;
+    }
+    const courses = await Course.find(query);
+    res.render('search', {
+      title: '',
+      isCourses: true,
+      courses
+    });
+  } catch (error) {
+    console.error('Error searching courses:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 
 // GET /courses/:id/edit - страница редактирования курса
 router.get('/:id/edit', async (req, res) => {
@@ -63,4 +109,3 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
-

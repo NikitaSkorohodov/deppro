@@ -1,19 +1,5 @@
 <style>
-    .row .col.s6 {
-        width: 100%; /* Изменено для адаптации под мобильные устройства */
-        margin-left: auto;
-        left: auto;
-        right: auto;
-    }
-    .card .card-image img {
-        height: auto; /* Изменено для адаптации под мобильные устройства */
-        width: 100%;
-        object-fit: cover;
-    }
-    .row {
-        margin-left: 0; /* Изменено для адаптации под мобильные устройства */
-        margin-right: 0; /* Добавлено для адаптации под мобильные устройства */
-    }
+    
     .carousel-container {
         width: 100%; /* Изменено для адаптации под мобильные устройства */
         overflow: hidden; /* Добавлено для адаптации под мобильные устройства */
@@ -95,7 +81,6 @@ document.querySelector('.carousel-container').addEventListener('mouseleave', fun
           </div>
           <div class="card-action actions">
             <a href="/courses/{{id}}" target="_blank">{{__ 'more details'}}</a>
-            <a href="/courses/{{id}}/edit?allow=true">{{__ 'Edit'}}</a>
             <form action="/card/add" method="POST">
               <input type="hidden" name="id" value="{{id}}">
               <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
@@ -108,3 +93,4 @@ document.querySelector('.carousel-container').addEventListener('mouseleave', fun
 {{else}}
   <p>{{__ 'This technology is not yet available'}}</p>
 {{/if}}
+

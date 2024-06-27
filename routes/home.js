@@ -1,19 +1,27 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const Course = require('../models/products');
-const router = Router()
+const router = Router();
 
 router.get('/', async (req, res) => {
-    try {
-      const courses = await Course.find();
-      res.render('index', {
-        title: 'главная страница',
-        isHome: true,
-        courses
-      });
-    } catch (error) {
-      console.error('Error fetching courses:', error);
-      res.status(500).send('Internal Server Error');
-    }
-  });
+  try {
+    const courses = await Course.find();
+    // Предположим, что у вас есть объект user, который передается в шаблон
+    const user = req.user; // Предположим, что информация о пользователе доступна в запросе
 
-module.exports = router
+    // Определяем, является ли пользователь администратором
+    const isAdmin = user && user.username === 'ADMIN';
+
+    res.render('index', {
+      title: 'главная страница',
+      isHome: true,
+      courses,
+      user, // Передаем информацию о пользователе в шаблон
+      isAdmin // Передаем информацию о статусе администратора
+    });
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+module.exports = router;

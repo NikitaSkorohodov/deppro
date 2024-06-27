@@ -1,12 +1,21 @@
-const { Router } = require('express');
+const express = require('express');
+const router = express.Router();
 const Card = require('../models/card');
 const Course = require('../models/products');
-const router = Router();
+
+// Middleware to set user status in response locals
+router.use((req, res, next) => {
+  res.locals.user = req.user; // Assuming `req.user` is populated if user is logged in
+  next();
+});
 
 // Add course to cart
 router.post('/add', async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming user is authenticated and userId is available in req.user
+    if (!req.user) {
+      return res.status(401).send('Unauthorized');
+    }
+    const userId = req.user._id;
     const course = await Course.findById(req.body.id);
     await Card.add(userId, course);
     res.redirect('/card');
@@ -19,7 +28,10 @@ router.post('/add', async (req, res) => {
 // Remove course from cart
 router.delete('/remove/:id', async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming user is authenticated and userId is available in req.user
+    if (!req.user) {
+      return res.status(401).send('Unauthorized');
+    }
+    const userId = req.user._id;
     const card = await Card.remove(userId, req.params.id);
     res.status(200).json(card);
   } catch (error) {
@@ -31,7 +43,10 @@ router.delete('/remove/:id', async (req, res) => {
 // Render cart page
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming user is authenticated and userId is available in req.user
+    if (!req.user) {
+      return res.redirect('/auth/login'); // Redirect to login if not authenticated
+    }
+    const userId = req.user._id;
     const card = await Card.fetchByUser(userId);
     let totalPrice = 0;
 

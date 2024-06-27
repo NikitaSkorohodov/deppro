@@ -18,6 +18,19 @@ router.get('/', async (req, res) => {
 });
 
 // Search route
+router.get('/ed', async (req, res) => {
+  try {
+    const courses = await Course.find();
+    res.render('edit', {
+      title: 'Курсы',
+      isCourses: true,
+      courses
+    });
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 // Search route
 router.get('/search', async (req, res) => {
   try {

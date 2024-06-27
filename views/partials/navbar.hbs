@@ -18,29 +18,48 @@
         </a>
       </li>
       {{#if isHome}}
-      <li class="active"><a href="/">{{__ 'MAIN'}}</a></li>
+        <li class="active"><a href="/">{{__ 'MAIN'}}</a></li>
       {{else}}
-      <li><a href="/">{{__ 'MAIN'}}</a></li>
+        <li><a href="/">{{__ 'MAIN'}}</a></li>
       {{/if}}
       {{#if isCourses}}
-      <li class="active"><a href="/courses">{{__ 'PRODUCTS'}}</a></li>
+        <li class="active"><a href="/courses">{{__ 'PRODUCTS'}}</a></li>
       {{else}}
-      <li><a href="/courses">{{__ 'PRODUCTS'}}</a></li>
+        <li><a href="/courses">{{__ 'PRODUCTS'}}</a></li>
       {{/if}}
-      {{#if isAdd}}
-      <li class="active"><a href="/add">{{__ 'ADD PRODUCTS'}}</a></li>
+      {{#if user}}
+        {{#if isAdmin}} <!-- Предположим, что isAdmin - это свойство, указывающее на администратора -->
+          {{#if isAdd}}
+            <li class="active"><a href="/add">{{__ 'ADD PRODUCTS'}}</a></li>
+          {{else}}
+            <li><a href="/add">{{__ 'ADD PRODUCTS'}}</a></li>
+          {{/if}}
+          {{#if isCourses}}
+        <li class="active"><a href="/courses/ed">{{__ 'Edit'}}</a></li>
       {{else}}
-      <li><a href="/add">{{__ 'ADD PRODUCTS'}}</a></li>
+        <li><a href="/courses/ed">{{__ 'Edit'}}</a></li>
+      {{/if}}
+        {{/if}}
       {{/if}}
       {{#if isCard}}
-      <li class="active"><a href="/card">{{__ 'CARD'}}</a></li>
+        <li class="active"><a href="/card">{{__ 'CARD'}}</a></li>
       {{else}}
-      <li><a href="/card">{{__ 'CARD'}}</a></li>
+        <li><a href="/card">{{__ 'CARD'}}</a></li>
       {{/if}}
       {{#if isAdd}}
-      <li class="active"><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
+        <li class="active"><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
       {{else}}
-      <li><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
+        <li><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
+      {{/if}}
+      {{#if isAdd}}
+        <li class="active"><a href="/auth/login">{{__ 'LOGIN'}}</a></li>
+      {{else}}
+        <li><a href="/auth/login">{{__ 'LOGIN'}}</a></li>
+      {{/if}}
+      {{#if isAdd}}
+        <li class="active"><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>
+      {{else}}
+        <li><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>
       {{/if}}
       <!-- Language Switcher -->
       <li>
@@ -56,4 +75,3 @@
     </ul>
   </div>
 </nav>
-
